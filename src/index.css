@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+}
+
+.bg-searchIcon {
+  background-position: 10px;
+  background-repeat: no-repeat;
+  background-size: 25px;
+}
+
