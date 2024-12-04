@@ -4,6 +4,7 @@ import logo from "../assets/react.svg";
 import { useForm } from "react-hook-form";
 import { useMutateData } from "../services/useMutateData";
 import {
+  getLocalStoreData,
   // clearLocalStore,
   // getLocalStoreData,
   setLocalStoreData,
@@ -36,6 +37,7 @@ export const Header: React.FC = () => {
     }
   }, [isSuccess, userData]);
 
+
   const handleSubmitFunc = (data: string) => {
     mutate({
       url: `https://api.github.com/users/${data}`,
@@ -48,7 +50,7 @@ export const Header: React.FC = () => {
         <form
           className="justify-center flex items-center mx-8 relative lg:mt-2 mt-[4rem]"
           onSubmit={handleSubmit((data) => {
-            if (status !== "pending") {
+            if (status === "idle") {
               handleSubmitFunc(data.username);
             }
           })}
@@ -81,7 +83,8 @@ export const Header: React.FC = () => {
 };
 
 const SubHeader = ({ data }: any) => {
-  const [localData, setLocalDate] = useState();
+  const [localData] = useState(getLocalStoreData({ name: "UserData" }));
+
   return (
     <div className=" text-slate-300 mx-8">
       <div className="flex items-start flex-col lg:flex-row">
@@ -89,22 +92,24 @@ const SubHeader = ({ data }: any) => {
           <div className="relative rounded-lg bg-gray-800 overflow-hidden p-1 -mt-6 w-fit  inline-flex">
             <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)] rounded-2xl" />
             <div className=" gap-2 cursor-pointer backdrop-blur-2xl rounded-lg">
-              <img
-                src={data.avatar_url}
-                alt="profile-image"
-                width={100}
-                height={100}
-                className="bg-gray-900 rounded-lg"
-              />
+              <a href={data?.url != undefined ? data?.url : localData[0].url}>
+                <img
+                  src={data?.avatar_url != undefined ? data?.avatar_url : logo}
+                  alt="profile-image"
+                  width={100}
+                  height={100}
+                  className="bg-gray-900 rounded-lg"
+                />
+              </a>
             </div>
           </div>
           {/* </MovingBorder> */}
           <div className=" bottom-0 lg:w-[15dvw] text-pretty cursor-pointer">
             <h4 className="text-2xl tracking-wide">
-              {data?.name ?? data?.name}
+              {data?.name != undefined ? data?.name : localData[0].name}
             </h4>
             <p className="py-2 w-full lg:truncate text-ellipsis ...">
-              {data?.bio ?? data?.bio}
+              {data?.bio != undefined ? data?.bio : localData[0].bio}
             </p>
           </div>
         </div>
@@ -115,7 +120,9 @@ const SubHeader = ({ data }: any) => {
             </p>
             <span className=" w-[2px] bg-slate-800" />
             <p className="lg:text-lg  text-sm">
-              {data?.followers ?? data?.followers}
+              {data?.followers != undefined
+                ? data?.followers
+                : localData[0].followers}
             </p>
           </div>
           <div className="bg-gray-900 p-4 rounded-xl  flex space-x-4 cursor-pointer">
@@ -124,7 +131,9 @@ const SubHeader = ({ data }: any) => {
             </p>
             <span className="w-[2px] bg-slate-800" />
             <p className="lg:text-lg  text-sm">
-              {data?.following ?? data?.following}
+              {data?.following != undefined
+                ? data?.following
+                : localData[0].following}
             </p>
           </div>
           <div className="bg-gray-900 p-4 rounded-xl  flex space-x-4 cursor-pointer">
@@ -133,7 +142,9 @@ const SubHeader = ({ data }: any) => {
             </p>
             <span className=" w-[2px] bg-slate-800" />
             <p className="lg:text-lg text-sm text-balance">
-              {data?.location ?? data?.location}
+              {data?.location != undefined
+                ? data?.location
+                : localData[0].location}
             </p>
           </div>
         </div>

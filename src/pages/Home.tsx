@@ -1,7 +1,14 @@
 import Card from "../components/Card";
 
 import Layout from "../layout/layout";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
+import {
+  getLocalStoreData,
+  // clearLocalStore,
+  // getLocalStoreData,
+  // setLocalStoreData,
+} from "../services/useLocalStorage";
+import { useMutateData } from "../services/useMutateData";
 
 const Home = () => {
   // const [currentPage, setCurrentPage] = useState<number>(0);
@@ -14,6 +21,7 @@ const Home = () => {
   //   );
   //   setFilteredData(filteredProducts);
   // }, [currentPage, filteredData, itemsPerPage]);
+  
 
   return (
     <Suspense fallback={<p>Loading...</p>}>
