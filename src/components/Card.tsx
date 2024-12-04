@@ -25,7 +25,7 @@ const Card = () => {
               <p></p>
             </div>
             <div>
-              <p className="text-sm text-slate-300 ">updated x days ago</p>
+              <p className="text-sm text-slate-300">updated x days ago</p>
             </div>
           </div>
         </div>
