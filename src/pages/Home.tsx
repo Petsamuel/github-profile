@@ -1,15 +1,8 @@
 import Card from "../components/Card";
-
 import Layout from "../layout/layout";
-import { Suspense, useEffect } from "react";
-import {
-  getLocalStoreData,
-  // clearLocalStore,
-  // getLocalStoreData,
-  // setLocalStoreData,
-} from "../services/useLocalStorage";
-import { useMutateData } from "../services/useMutateData";
-
+import { Suspense } from "react";
+import { getGithubProfile, getGithubRepository } from "../services/Services";
+import { useQuery } from "@tanstack/react-query";
 const Home = () => {
   // const [currentPage, setCurrentPage] = useState<number>(0);
   // const [itemsPerPage, setItemsPerPage] = useState<number>(4);
@@ -21,7 +14,13 @@ const Home = () => {
   //   );
   //   setFilteredData(filteredProducts);
   // }, [currentPage, filteredData, itemsPerPage]);
-  
+
+  const { data, isError, isLoading, error, isSuccess } = useQuery({
+    queryKey: ["profile"],
+    
+  });
+
+  console.log(data, isError, isLoading, error, isSuccess);
 
   return (
     <Suspense fallback={<p>Loading...</p>}>
