@@ -7,7 +7,7 @@ import { getGithubProfile } from "../services/Services";
 export const Header: React.FC = () => {
   const [userInput, setUserInput] = useState<string>("github");
   const { data: profile, isLoading } = useQuery({
-    queryKey: ["profile", userInput],
+    queryKey: ["profile"],
     queryFn: () => getGithubProfile(`${userInput}`),
   });
 
@@ -20,6 +20,7 @@ export const Header: React.FC = () => {
 
   const handleSubmitFunc = (data: string) => {
     setUserInput(data);
+    console.log(data);
   };
 
   return (
@@ -59,7 +60,7 @@ export const Header: React.FC = () => {
 };
 
 type UserProfile = {
-  url: string;
+  html_url: string;
   avatar_url: string;
   name: string;
   bio: string;
@@ -75,7 +76,7 @@ const SubHeader = (data: UserProfile) => {
           <div className="relative rounded-lg bg-gray-800 overflow-hidden p-1 -mt-6 w-fit  inline-flex">
             <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)] rounded-2xl" />
             <div className=" gap-2 cursor-pointer backdrop-blur-2xl rounded-lg">
-              <a href={data?.url}>
+              <a href={data?.html_url}>
                 <img
                   src={data?.avatar_url}
                   alt="profile-image"
