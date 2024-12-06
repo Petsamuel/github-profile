@@ -2,14 +2,26 @@ import LicenseIcon from "../assets/Chield_alt.svg";
 import NestingIcon from "../assets/Nesting.svg";
 import StarIcon from "../assets/Star.svg";
 import { formatTimeAgo } from "../services/Services";
-
+import { motion } from "framer-motion";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Card = ({ cardDetails }: any) => {
   const UpdatedDate = formatTimeAgo(cardDetails.updated_at);
 
   // console.log(date);
   return (
-    <section className="flex items-start mt-4 ">
+    <motion.section
+      className="flex items-start mt-4 cursor-pointer "
+      initial={{ opacity: 0, y: 100 }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        transition: {
+          duration: 0.6,
+          ease: "easeOut",
+        },
+      }}
+      viewport={{ once: true }}
+    >
       <div className="backdrop-blur- bg-opacity-50 w-full">
         <div className="flex flex-col p-6 bg-gradient-to-r from-gray-900 to-indigo-900 shadow-sm rounded-lg ">
           <h1 className=" font-bold text-white pb-2 ">{cardDetails.name}</h1>
@@ -37,7 +49,7 @@ const Card = ({ cardDetails }: any) => {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

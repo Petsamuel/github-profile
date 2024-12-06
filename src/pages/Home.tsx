@@ -12,28 +12,45 @@ type repoInfo = {
   forks_count: number;
   updated_at: string;
   name?: string;
+  html_url?: string;
 };
 
 const Home = () => {
   const [userInput, setUserInput] = useState<string>("github");
 
   const [limit, setLimit] = useState(true);
-  const { data: repo } = useQuery({
+  const {
+    data: repo,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["repositories", userInput],
     queryFn: () => getGithubRepository(`${userInput}`),
   });
+  console.log(isError, error);
+
+  console.log(repo);
 
   return (
     <Suspense fallback={<p>Loading...</p>}>
       <>
         <Header propsFunc={setUserInput} />
 
-        {repo?.length != 0 ? (
+        {repo?.length <= 0 || isError ? (
+          <div className="text-center justify-center flex mb-[4rem] text-gray-900">
+            <p className="text-4xl font-bold">No repository</p>
+          </div>
+        ) : (
+          //
           <section className="flex flex-col  justify-center items-center mx-8">
             <div className="grid lg:md:grid-cols-2 gap-x-6 w-full lg:md:w-fit">
               {repo
                 ?.map((value: repoInfo, index: number) => (
-                  <div key={index} className="cursor-pointer">
+                  <a
+                    key={index}
+                    href={value.html_url}
+                    className="hover:scale-105"
+                  >
                     <Card
                       cardDetails={{
                         license: value.license,
@@ -43,7 +60,7 @@ const Home = () => {
                         name: value.name,
                       }}
                     />
-                  </div>
+                  </a>
                 ))
                 .splice(0, `${limit ? 4 : repo.length}`)}
             </div>
@@ -54,10 +71,6 @@ const Home = () => {
               {limit ? " View all repository" : "Hide all repository"}
             </p>
           </section>
-        ) : (
-          <div className="text-center justify-center flex mb-[4rem] text-gray-900">
-            <p className="text-4xl font-bold">No repository</p>
-          </div>
         )}
         <footer>
           <Footer />
