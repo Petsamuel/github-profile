@@ -70,7 +70,7 @@ export const Header = ({ propsFunc }: Props) => {
       </div>
 
       {(profile || !isError) && (
-        <SubHeader isLoading={isLoading} data={profile} />
+        <SubHeader  data={profile} />
       )}
     </section>
   );
@@ -86,10 +86,10 @@ type UserProfile = {
   location: string;
 };
 const SubHeader = ({
-  isLoading,
+
   data,
 }: {
-  isLoading: boolean;
+
   data: UserProfile;
 }) => {
   return (
