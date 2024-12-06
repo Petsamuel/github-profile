@@ -1,31 +1,68 @@
 import Card from "../components/Card";
-import Layout from "../layout/layout";
-import { Suspense } from "react";
+
+import { Suspense, useState } from "react";
 import { getGithubRepository } from "../services/Services";
 import { useQuery } from "@tanstack/react-query";
+import { Header } from "../components/Header";
+import Footer from "../components/Footer";
+
+type repoInfo = {
+  license?: string;
+  stargazers_count: number;
+  forks_count: number;
+  updated_at: string;
+  name?: string;
+};
 
 const Home = () => {
-  const { data } = useQuery<any>({
-    queryKey: ["profile"],
+  const [userInput, setUserInput] = useState<string>("github");
+
+  const [limit, setLimit] = useState(true);
+  const { data: repo } = useQuery({
+    queryKey: ["repositories", userInput],
+    queryFn: () => getGithubRepository(`${userInput}`),
   });
-  console.log(data);
 
   return (
     <Suspense fallback={<p>Loading...</p>}>
-      <Layout>
-        <section className="flex flex-col  justify-center items-center mx-8">
-          <div className="grid lg:md:grid-cols-2 gap-x-6 w-full lg:md:w-fit">
-            {[1, 2, 3, 4].map((_, index) => (
-              <div key={index} className="">
-                <Card />
-              </div>
-            ))}
+      <>
+        <Header propsFunc={setUserInput} />
+
+        {repo?.length != 0 ? (
+          <section className="flex flex-col  justify-center items-center mx-8">
+            <div className="grid lg:md:grid-cols-2 gap-x-6 w-full lg:md:w-fit">
+              {repo
+                ?.map((value: repoInfo, index: number) => (
+                  <div key={index} className="cursor-pointer">
+                    <Card
+                      cardDetails={{
+                        license: value.license,
+                        stargazers_count: value.stargazers_count,
+                        forks_count: value.forks_count,
+                        updated_at: value.updated_at,
+                        name: value.name,
+                      }}
+                    />
+                  </div>
+                ))
+                .splice(0, `${limit ? 4 : repo.length}`)}
+            </div>
+            <p
+              className="text-slate-300 mt-[2rem] cursor-pointer"
+              onClick={() => setLimit(!limit)}
+            >
+              {limit ? " View all repository" : "Hide all repository"}
+            </p>
+          </section>
+        ) : (
+          <div className="text-center justify-center flex mb-[4rem] text-gray-900">
+            <p className="text-4xl font-bold">No repository</p>
           </div>
-          <p className="text-slate-300 mt-[2rem] cursor-pointer">
-            View all repository
-          </p>
-        </section>
-      </Layout>
+        )}
+        <footer>
+          <Footer />
+        </footer>
+      </>
     </Suspense>
   );
 };

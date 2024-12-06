@@ -1,26 +1,33 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import { getGithubProfile } from "../services/Services";
 
-export const Header: React.FC = () => {
+type Props = {
+  propsFunc: (arg: string) => void;
+};
+
+export const Header = ({ propsFunc }: Props) => {
   const [userInput, setUserInput] = useState<string>("github");
+
   const { data: profile, isLoading } = useQuery({
-    queryKey: ["profile"],
+    queryKey: ["profile", userInput],
     queryFn: () => getGithubProfile(`${userInput}`),
   });
 
   const {
     register,
     handleSubmit,
-
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
   } = useForm();
-
+  console.log(userInput);
+  propsFunc(userInput);
   const handleSubmitFunc = (data: string) => {
-    setUserInput(data);
-    console.log(data);
+    if (isSubmitSuccessful) {
+      setUserInput(data);
+      propsFunc(data);
+    }
   };
 
   return (
@@ -54,7 +61,8 @@ export const Header: React.FC = () => {
         )}
         {/* {data[0]?.message ==="notfound" && "notfound"} */}
       </div>
-      {profile && <SubHeader {...profile} />}
+
+      {profile && <SubHeader isLoading={isLoading} data={profile} />}
     </section>
   );
 };
@@ -68,7 +76,13 @@ type UserProfile = {
   following: number;
   location: string;
 };
-const SubHeader = (data: UserProfile) => {
+const SubHeader = ({
+  isLoading,
+  data,
+}: {
+  isLoading: boolean;
+  data: UserProfile;
+}) => {
   return (
     <div className=" text-slate-300 mx-8">
       <div className="flex items-start flex-col lg:flex-row">
@@ -76,15 +90,34 @@ const SubHeader = (data: UserProfile) => {
           <div className="relative rounded-lg bg-gray-800 overflow-hidden p-1 -mt-6 w-fit  inline-flex">
             <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)] rounded-2xl" />
             <div className=" gap-2 cursor-pointer backdrop-blur-2xl rounded-lg">
-              <a href={data?.html_url}>
-                <img
-                  src={data?.avatar_url}
-                  alt="profile-image"
-                  width={100}
-                  height={100}
-                  className="bg-gray-900 rounded-lg"
-                />
-              </a>
+              {isLoading ? (
+                <div
+                  role="status"
+                  className="space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center"
+                >
+                  <div className="flex items-center justify-center w-full h-48 rounded sm:w-96 bg-gray-700">
+                    <svg
+                      className="w-10 h-10 text-gray-600"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 20 18"
+                    >
+                      <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
+                    </svg>
+                  </div>
+                </div>
+              ) : (
+                <a href={data?.html_url}>
+                  <img
+                    src={data?.avatar_url}
+                    alt="profile-image"
+                    width={100}
+                    height={100}
+                    className="bg-gray-900 rounded-lg"
+                  />
+                </a>
+              )}
             </div>
           </div>
           {/* </MovingBorder> */}
