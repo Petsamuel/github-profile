@@ -16,3 +16,8 @@ html {
 body {
   background-color: rgba(31, 41, 55);
 }
+.heroBg {
+  background-image: url("./assets/hero-image-github-profile.png");
+  background-repeat: no-repeat;
+  background-position: center;
+}
