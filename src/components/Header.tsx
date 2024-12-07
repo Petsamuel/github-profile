@@ -7,7 +7,6 @@ import {
   getGithubProfile,
   getRoast,
 } from "../services/Services";
-
 import { AnimatedModal } from "./modal";
 
 type Props = {
@@ -118,7 +117,7 @@ export const Header = ({ propsFunc, repos }: Props) => {
         {errors.username?.message && (
           <div className="text-center text-rose-600 font-medium text-xs"></div>
         )}
-        {isSuccess && (
+        {isSuccess && userInput !== "github" && (
           <div className="flex justify-center mt-6">
             <AnimatedModal roast={roast} />
           </div>
