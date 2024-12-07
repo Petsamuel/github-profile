@@ -1,18 +1,25 @@
-import Card from "../components/Card";
-
 import { Suspense, useState } from "react";
 import { getGithubRepository } from "../services/Services";
 import { useQuery } from "@tanstack/react-query";
 import { Header } from "../components/Header";
 import Footer from "../components/Footer";
+import { RepoAnimatedModal } from "../components/Repo-Modal";
 
 type repoInfo = {
-  license?: string;
+  license?: { key: string };
   stargazers_count: number;
   forks_count: number;
   updated_at: string;
   name?: string;
   html_url?: string;
+  language: string;
+  topics: string[];
+  watchers_count: number;
+  open_issues_count: number;
+  description: string;
+  contributors_url: string;
+  has_issues: boolean;
+  owner: { login: string; avatar_url: string; html_url: string };
 };
 
 const Home = () => {
@@ -39,21 +46,24 @@ const Home = () => {
             <div className="grid lg:md:grid-cols-2 gap-x-6 w-full lg:md:w-fit">
               {repo
                 ?.map((value: repoInfo, index: number) => (
-                  <a
-                    key={index}
-                    href={value.html_url}
-                    className="hover:scale-105"
-                  >
-                    <Card
-                      cardDetails={{
-                        license: value.license,
-                        stargazers_count: value.stargazers_count,
-                        forks_count: value.forks_count,
-                        updated_at: value.updated_at,
-                        name: value.name,
-                      }}
+                  <span key={index}>
+                    <RepoAnimatedModal
+                      license={value.license}
+                      stargazers_count={value.stargazers_count}
+                      forks_count={value.forks_count}
+                      updated_at={value.updated_at}
+                      name={value.name}
+                      html_url={value.html_url}
+                      language={value.language}
+                      topics={value.topics}
+                      watchers_count={value.watchers_count}
+                      open_issues_count={value.open_issues_count}
+                      description={value.description}
+                      contributors_url={value.contributors_url}
+                      has_issues={value.has_issues}
+                      owner={value.owner}
                     />
-                  </a>
+                  </span>
                 ))
                 .splice(0, `${limit ? 4 : repo.length}`)}
             </div>

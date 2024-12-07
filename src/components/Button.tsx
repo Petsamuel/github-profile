@@ -1,12 +1,12 @@
 type ButtonProps = {
-  handleClick: () => void;
   text: string;
+  handleClick: (e: boolean) => void;
 };
 
-export const Button = ({ handleClick, text }: ButtonProps) => {
+export const Button = ({ text, handleClick }: ButtonProps) => {
   return (
     <button
-      onClick={handleClick}
+      onClick={() => handleClick(true)}
       className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block"
     >
       <span className="absolute inset-0 overflow-hidden rounded-full">

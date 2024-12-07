@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
-
 import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
-import { getCommitMessage, getGithubProfile } from "../services/Services";
-import { Button } from "./Button";
+import {
+  getCommitMessage,
+  getGithubProfile,
+  getRoast,
+} from "../services/Services";
+
+import { AnimatedModal } from "./modal";
 
 type Props = {
   propsFunc: (arg: string) => void;
@@ -19,6 +23,7 @@ type UserProfile = {
   following: number;
   location: string;
 };
+
 export const Header = ({ propsFunc, repos }: Props) => {
   const [userInput, setUserInput] = useState<string>("github");
 
@@ -39,29 +44,44 @@ export const Header = ({ propsFunc, repos }: Props) => {
   } = useForm();
 
   // fetch commit message
-  // const { data: commitMessage } = useQuery({
-  //   queryKey: ["commit", userInput, repos],
-  //   queryFn: () =>
-  //     getCommitMessage(
-  //       userInput,
-  //       repos.length >= 1
-  //         ? repos[getRandomInt(repos?.length)].name
-  //         : "no repo really ?"
-  //     ),
-  // });
+  const { data: commitMessage } = useQuery({
+    queryKey: ["commit", userInput, repos],
+    queryFn: () => getCommitMessage(userInput, getRepositoryName()),
+    enabled: !!userInput && !!repos,
+  });
+
+  // get random repo name
+  const getRepositoryName = () => {
+    {
+      if (repos?.length >= 1) {
+        return repos[getRandomInt(repos?.length)].name;
+      } else {
+        return "no repo really ?";
+      }
+    }
+  };
 
   // get random repos[x]name
-  // function getRandomInt(max: number) {
-  //   return Math.floor(Math.random() * max);
-  // }
+  function getRandomInt(max: number) {
+    return Math.floor(Math.random() * max);
+  }
+  // set repoCommitList
+  const CommitList = () => {
+    if (commitMessage?.length >= 1) {
+      const commits = commitMessage.map(
+        (value: { commit: { message: string } }) => value.commit.message
+      );
+      return commits;
+    }
+    return "none found!";
+  };
 
-  // function xyz() {
-  //   // gets commit and puts in an array
-  //   const commit = commitMessage?.map((value: { commit: { message: string } }) => value.commit.message);
-
-  //   // console.log(commit?.splice(1, 4));
-  // }
-  // xyz();
+  // get Roast
+  const { data: roast } = useQuery({
+    queryKey: ["roast", userInput, CommitList()],
+    queryFn: () => getRoast(userInput, getRepositoryName(), CommitList()),
+    enabled: !!userInput && commitMessage?.length > 0,
+  });
 
   const handleSubmitFunc = (data: string) => {
     if (isSubmitSuccessful) {
@@ -94,17 +114,15 @@ export const Header = ({ propsFunc, repos }: Props) => {
             })}
             disabled={isLoading}
           />
-          {/* <input type="text" className="hidden" {...register("honeyComb")}/> */}
         </form>
         {errors.username?.message && (
           <div className="text-center text-rose-600 font-medium text-xs"></div>
         )}
-        {/* {isSuccess && (
+        {isSuccess && (
           <div className="flex justify-center mt-6">
-            <Button handleClick={() => 0} text="Roast my commit " />
+            <AnimatedModal roast={roast} />
           </div>
-        )} */}
-        {/* {data[0]?.message ==="notfound" && "notfound"} */}
+        )}
       </div>
 
       {(profile || !isError) && <SubHeader data={profile} />}
@@ -131,7 +149,7 @@ const SubHeader = ({ data }: { data: UserProfile }) => {
               </a>
             </div>
           </div>
-          {/* </MovingBorder> */}
+
           <div className=" bottom-0 lg:w-[15dvw] text-pretty cursor-pointer">
             <h4 className="text-2xl tracking-wide">{data?.name}</h4>
             <p className="py-2 w-full lg:truncate text-ellipsis ...">

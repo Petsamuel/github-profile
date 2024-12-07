@@ -1,5 +1,5 @@
 const BASE_URL = import.meta.env.VITE_GITHUB_BASE_URL;
-// const ROAST_URL = import.meta.env.VITE_ROAST_URL;
+const ROAST_URL = import.meta.env.VITE_ROAST_URL;
 const BASE_REPO_URL = import.meta.env.VITE_GITHUB_REPOS_URL;
 
 export const getGithubProfile = async (name: string) => {
@@ -21,10 +21,22 @@ export const getCommitMessage = async (name: string, repo: string) => {
   return data;
 };
 
-export const getRoast = async (name: string, commit: []) => {
-  const data = [name, commit];
-
-  return data;
+export const getRoast = async (name: string, repoName: string, commits: []) => {
+  try {
+    const response = await fetch(`${ROAST_URL}`, {
+      method: "POST",
+      body: JSON.stringify({ name, repoName, commits }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching roast:", error);
+  }
 };
 
 export const formatTimeAgo = (dateString: string): string => {
