@@ -1,4 +1,6 @@
 const BASE_URL = import.meta.env.VITE_GITHUB_BASE_URL;
+// const ROAST_URL = import.meta.env.VITE_ROAST_URL;
+const BASE_REPO_URL = import.meta.env.VITE_GITHUB_REPOS_URL;
 
 export const getGithubProfile = async (name: string) => {
   const response = await fetch(`${BASE_URL}/${name}`);
@@ -9,6 +11,19 @@ export const getGithubProfile = async (name: string) => {
 export const getGithubRepository = async (name: string) => {
   const response = await fetch(`${BASE_URL}/${name}/repos`);
   const data = await response.json();
+
+  return data;
+};
+
+export const getCommitMessage = async (name: string, repo: string) => {
+  const response = await fetch(`${BASE_REPO_URL}/${name}/${repo}/commits`);
+  const data = response.json();
+  return data;
+};
+
+export const getRoast = async (name: string, commit: []) => {
+  const data = [name, commit];
+
   return data;
 };
 

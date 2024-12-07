@@ -19,22 +19,15 @@ const Home = () => {
   const [userInput, setUserInput] = useState<string>("github");
 
   const [limit, setLimit] = useState(true);
-  const {
-    data: repo,
-    isError,
-    error,
-  } = useQuery({
+  const { data: repo, isError } = useQuery({
     queryKey: ["repositories", userInput],
     queryFn: () => getGithubRepository(`${userInput}`),
   });
-  console.log(isError, error);
-
-  console.log(repo);
 
   return (
     <Suspense fallback={<p>Loading...</p>}>
       <>
-        <Header propsFunc={setUserInput} />
+        <Header propsFunc={setUserInput} repos={repo} />
 
         {repo?.length <= 0 || isError ? (
           <div className="text-center justify-center flex mb-[4rem] text-gray-900">

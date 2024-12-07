@@ -1,26 +1,35 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
-import { getGithubProfile } from "../services/Services";
+import { getCommitMessage, getGithubProfile } from "../services/Services";
+import { Button } from "./Button";
 
 type Props = {
   propsFunc: (arg: string) => void;
+  repos: { name: string }[];
 };
-
-export const Header = ({ propsFunc }: Props) => {
+type UserProfile = {
+  html_url: string;
+  avatar_url: string;
+  name: string;
+  bio: string;
+  followers: number;
+  following: number;
+  location: string;
+};
+export const Header = ({ propsFunc, repos }: Props) => {
   const [userInput, setUserInput] = useState<string>("github");
 
   const {
     data: profile,
     isLoading,
     isError,
-    error,
-    
-    
+    isSuccess,
   } = useQuery({
     queryKey: ["profile", userInput],
-    queryFn: () => getGithubProfile(`${userInput}`),
+    queryFn: () => getGithubProfile(userInput),
   });
 
   const {
@@ -28,8 +37,32 @@ export const Header = ({ propsFunc }: Props) => {
     handleSubmit,
     formState: { errors, isSubmitSuccessful },
   } = useForm();
-  console.log(error);
-  propsFunc(userInput);
+
+  // fetch commit message
+  // const { data: commitMessage } = useQuery({
+  //   queryKey: ["commit", userInput, repos],
+  //   queryFn: () =>
+  //     getCommitMessage(
+  //       userInput,
+  //       repos.length >= 1
+  //         ? repos[getRandomInt(repos?.length)].name
+  //         : "no repo really ?"
+  //     ),
+  // });
+
+  // get random repos[x]name
+  // function getRandomInt(max: number) {
+  //   return Math.floor(Math.random() * max);
+  // }
+
+  // function xyz() {
+  //   // gets commit and puts in an array
+  //   const commit = commitMessage?.map((value: { commit: { message: string } }) => value.commit.message);
+
+  //   // console.log(commit?.splice(1, 4));
+  // }
+  // xyz();
+
   const handleSubmitFunc = (data: string) => {
     if (isSubmitSuccessful) {
       setUserInput(data);
@@ -61,37 +94,25 @@ export const Header = ({ propsFunc }: Props) => {
             })}
             disabled={isLoading}
           />
-          {/* <input type="text" className="hidden" /> */}
+          {/* <input type="text" className="hidden" {...register("honeyComb")}/> */}
         </form>
         {errors.username?.message && (
           <div className="text-center text-rose-600 font-medium text-xs"></div>
         )}
+        {/* {isSuccess && (
+          <div className="flex justify-center mt-6">
+            <Button handleClick={() => 0} text="Roast my commit " />
+          </div>
+        )} */}
         {/* {data[0]?.message ==="notfound" && "notfound"} */}
       </div>
 
-      {(profile || !isError) && (
-        <SubHeader  data={profile} />
-      )}
+      {(profile || !isError) && <SubHeader data={profile} />}
     </section>
   );
 };
 
-type UserProfile = {
-  html_url: string;
-  avatar_url: string;
-  name: string;
-  bio: string;
-  followers: number;
-  following: number;
-  location: string;
-};
-const SubHeader = ({
-
-  data,
-}: {
-
-  data: UserProfile;
-}) => {
+const SubHeader = ({ data }: { data: UserProfile }) => {
   return (
     <div className=" text-slate-300 mx-8">
       <div className="flex items-start flex-col lg:flex-row">
