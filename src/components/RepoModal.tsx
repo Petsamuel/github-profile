@@ -4,7 +4,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalTrigger,
-} from "./Animated-Modal";
+} from "./AnimatedModal";
 import { RiGitBranchLine } from "react-icons/ri";
 import Card from "./Card";
 import { TbEye, TbStar } from "react-icons/tb";

@@ -4,7 +4,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalTrigger,
-} from "./Animated-Modal";
+} from "./AnimatedModal";
 import { motion } from "framer-motion";
 import { Button } from "./Button";
 import { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ type roastProps = {
   roast: { user: string; Repo: string; roast: string };
 };
 
-export function AnimatedModal({ roast }: roastProps) {
+export function ButtonAnimatedModal({ roast }: roastProps) {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     setTimeout(() => setLoading(false), 5000);

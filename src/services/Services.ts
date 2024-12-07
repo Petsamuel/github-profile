@@ -11,7 +11,6 @@ export const getGithubProfile = async (name: string) => {
 export const getGithubRepository = async (name: string) => {
   const response = await fetch(`${BASE_URL}/${name}/repos`);
   const data = await response.json();
-
   return data;
 };
 

@@ -3,7 +3,7 @@ import { getGithubRepository } from "../services/Services";
 import { useQuery } from "@tanstack/react-query";
 import { Header } from "../components/Header";
 import Footer from "../components/Footer";
-import { RepoAnimatedModal } from "../components/Repo-Modal";
+import { RepoAnimatedModal } from "../components/RepoModal";
 
 type repoInfo = {
   license?: { key: string };

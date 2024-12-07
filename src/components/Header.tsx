@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
@@ -7,7 +6,8 @@ import {
   getGithubProfile,
   getRoast,
 } from "../services/Services";
-import { AnimatedModal } from "./modal";
+import { ButtonAnimatedModal } from "./Modal";
+
 
 type Props = {
   propsFunc: (arg: string) => void;
@@ -119,7 +119,7 @@ export const Header = ({ propsFunc, repos }: Props) => {
         )}
         {isSuccess && userInput !== "github" && (
           <div className="flex justify-center mt-6">
-            <AnimatedModal roast={roast} />
+            <ButtonAnimatedModal roast={roast} />
           </div>
         )}
       </div>
