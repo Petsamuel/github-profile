@@ -65,7 +65,7 @@ export function ButtonAnimatedModal({ roast }: roastProps) {
               ) : (
                 <div className="text-4xl text-white font-bold p-2 text-center flex gap-2 space-grotesk justify-center ">
                   <VscLoading className="animate-spin rounded-full border-gray-100" />
-                  <p className=" space-grotesk"> Fetching...</p>
+                  <p className=" space-grotesk animate-pulse"> Generating...</p>
                 </div>
               )}
             </ModalContent>
