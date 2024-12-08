@@ -51,7 +51,7 @@ export function ButtonAnimatedModal({ roast }: roastProps) {
                         ease: "easeInOut",
                         delay: 0.02 * 1,
                       }}
-                      className="text-slate-300 text-center text-balance  text-lg h-[25rem]"
+                      className="text-slate-300 text-center text-balance  text-lg h-[25rem] overflow-y-auto"
                     >
                       {roast?.roast}
                     </motion.p>
