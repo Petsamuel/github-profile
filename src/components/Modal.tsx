@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 
 import { VscLoading } from "react-icons/vsc";
 type roastProps = {
-  roast: { user: string; Repo: string; roast: string };
+  roast: { user: string; Repo: string; roast: string; advice: string };
 };
 
 export function ButtonAnimatedModal({ roast }: roastProps) {
@@ -32,7 +32,7 @@ export function ButtonAnimatedModal({ roast }: roastProps) {
             <ModalContent>
               {!loading && roast ? (
                 <div className="relative">
-                  <h4 className="text-lg md:text-3xl text-neutral-200  font-bold text-center mb-8 capitalize ">
+                  <h4 className="text-lg md:text-3xl text-neutral-200  font-bold text-center mb-6 capitalize ">
                     {roast?.user} 🔥🔥🔥
                   </h4>
                   <div className="space-grotesk relative">
@@ -52,19 +52,20 @@ export function ButtonAnimatedModal({ roast }: roastProps) {
                         ease: "easeInOut",
                         delay: 0.02 * 1,
                       }}
-                      className="text-slate-300 text-center text-balance text-sm  lg:text-lg h-[25rem] overflow-y-auto"
+                      className="text-slate-300  lg:text-balance text-pretty  h-fit overflow-y-auto"
                     >
                       {roast?.roast}
                     </motion.p>
-                    <p className="text-sm text-slate-400 font-semibold mt-8 space-grotesk absolute bottom-0 left-0">
+
+                    <p className="text-sm text-slate-400 font-semibold my-2 space-grotesk absolute end-0 left-0 ">
                       Repository:&nbsp;{roast?.Repo}
                     </p>
                   </div>
                 </div>
               ) : (
-                <div className="text-4xl text-white font-bold p-2 text-center flex gap-2 space-grotesk ">
+                <div className="text-4xl text-white font-bold p-2 text-center flex gap-2 space-grotesk justify-center ">
                   <VscLoading className="animate-spin rounded-full border-gray-100" />
-                  <p> Fetching...</p>
+                  <p className=" space-grotesk"> Fetching...</p>
                 </div>
               )}
             </ModalContent>

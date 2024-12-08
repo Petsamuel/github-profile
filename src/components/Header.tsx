@@ -133,20 +133,24 @@ const SubHeader = ({ data }: { data: UserProfile }) => {
     <div className=" text-slate-300 mx-8 space-grotesk">
       <div className="flex items-start flex-col lg:flex-row">
         <div className="flex flex-col space-y-2 relative">
-          <div className="relative rounded-lg bg-gray-800 overflow-hidden p-1 -mt-6 w-fit  inline-flex">
-            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)] rounded-2xl" />
-            <div className=" gap-2 cursor-pointer backdrop-blur-2xl rounded-lg">
-              <a href={data?.html_url}>
-                <img
-                  src={data?.avatar_url}
-                  alt="profile-image"
-                  width={100}
-                  height={100}
-                  className="bg-gray-900 rounded-lg"
-                />
-              </a>
+          {data?.avatar_url ? (
+            <div className="relative rounded-lg bg-gray-800 overflow-hidden p-1 -mt-6 w-fit  inline-flex">
+              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)] rounded-2xl" />
+              <div className=" gap-2 cursor-pointer backdrop-blur-2xl rounded-lg">
+                <a href={data?.html_url}>
+                  <img
+                    src={data?.avatar_url}
+                    alt="profile-image"
+                    width={100}
+                    height={100}
+                    className="bg-gray-900 rounded-lg"
+                  />
+                </a>
+              </div>
             </div>
-          </div>
+          ) : (
+            ""
+          )}
 
           <div className=" bottom-0 lg:w-[15dvw] text-pretty cursor-pointer">
             <h4 className="text-2xl tracking-wide">{data?.name}</h4>
