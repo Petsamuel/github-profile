@@ -65,7 +65,7 @@ export function RepoAnimatedModal({
             }}
           />
         </ModalTrigger>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center space-grotesk">
           <ModalBody>
             <ModalContent>
               <h4 className="text-lg md:text-4xl text-slate-300  font-bold text-center mb-8">
@@ -95,7 +95,7 @@ export function RepoAnimatedModal({
                 {/* still thinking */}
               </div>
             </ModalContent>
-            <ModalFooter className="gap-4">
+            <ModalFooter className="gap-4 space-grotesk">
               <button className="px-2 py-1 bg-gray-200 text-black dark:bg-black dark:border-black dark:text-white border border-gray-300 rounded-md text-sm w-28">
                 <a href={html_url}> Visit</a>
               </button>

@@ -8,7 +8,6 @@ import {
 } from "../services/Services";
 import { ButtonAnimatedModal } from "./Modal";
 
-
 type Props = {
   propsFunc: (arg: string) => void;
   repos: { name: string }[];
@@ -90,7 +89,7 @@ export const Header = ({ propsFunc, repos }: Props) => {
   };
 
   return (
-    <section className="flex flex-col  justify-center items-center">
+    <section className="flex flex-col  justify-center items-center space-grotesk">
       <div className="bg-cover bg-no-repeat lg:h-fit w-full bg-heroBg py-8 lg:pb-[8rem] h-[15rem] bg-center">
         <form
           className="justify-center flex items-center mx-8 relative lg:mt-2 mt-[4rem]"
@@ -131,7 +130,7 @@ export const Header = ({ propsFunc, repos }: Props) => {
 
 const SubHeader = ({ data }: { data: UserProfile }) => {
   return (
-    <div className=" text-slate-300 mx-8">
+    <div className=" text-slate-300 mx-8 space-grotesk">
       <div className="flex items-start flex-col lg:flex-row">
         <div className="flex flex-col space-y-2 relative">
           <div className="relative rounded-lg bg-gray-800 overflow-hidden p-1 -mt-6 w-fit  inline-flex">

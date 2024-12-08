@@ -154,7 +154,7 @@ export const ModalFooter = ({
   return (
     <div
       className={`
-        flex justify-center p-4 bg-gradient-to-r from-gray-900 to-slate-800/50
+        space-grotesk flex justify-center p-4 bg-gradient-to-r from-gray-900 to-slate-800/50
         ${className}
       `}
     >

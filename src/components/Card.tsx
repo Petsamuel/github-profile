@@ -22,7 +22,7 @@ const Card = ({
 
   return (
     <motion.section
-      className="flex items-start mt-4 cursor-pointer "
+      className="flex items-start mt-4 cursor-pointer space-grotesk"
       initial={{ opacity: 0, y: 100 }}
       whileInView={{
         opacity: 1,
@@ -34,7 +34,7 @@ const Card = ({
       }}
       viewport={{ once: true }}
     >
-      <div className="backdrop-blur- bg-opacity-50 w-full">
+      <div className="backdrop-blur- bg-opacity-50 w-full space-grotesk">
         <div className="flex flex-col p-6 bg-gradient-to-r from-gray-900 to-indigo-900 shadow-sm rounded-lg ">
           <h1 className=" font-bold text-white pb-2 ">{name}</h1>
           <h6 className=" text-slate-300 tracking-wide text-balance truncate text-ellipsis... lg:w-[28dvw]">
@@ -44,7 +44,7 @@ const Card = ({
             {license && (
               <div className="flex gap-1">
                 <img src={LicenseIcon} alt="lincense" />
-                <p className="capitalize text-slate-300">{license.key}</p>
+                <p className=" text-slate-300 uppercase">{license.key}</p>
               </div>
             )}
             <div className="flex gap-1 items-center text-slate-400">
